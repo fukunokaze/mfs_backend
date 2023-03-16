@@ -20,7 +20,7 @@ type server struct {
 func main() {
 	fmt.Println("Blog Service Started")
 
-	lis, err := net.Listen("tcp", "0.0.0.0:50052")
+	lis, err := net.Listen("tcp", ":50052")
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}

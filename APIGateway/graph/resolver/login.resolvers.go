@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 
-	"mfs_backend/LoginService/loginpb"
+	"github.com/fukunokaze/mfs_backend/LoginService/loginpb"
 
 	"github.com/fukunokaze/mfs_backend/APIGateway/graph/generated"
 	"github.com/fukunokaze/mfs_backend/APIGateway/graph/model"
@@ -19,14 +19,15 @@ import (
 func (r *mutationResolver) Authenticate(ctx context.Context, input model.Login) (*model.User, error) {
 	conn, err := grpc.Dial("localhost:50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	client := loginpb.NewInventoryClient(conn)
+	client := loginpb.NewLoginServiceClient(conn)
 
-	client.VerifyLogin()
+	userData, err := client.VerifyLogin(context.Background(), &loginpb.VerifyLoginRequest{Login: &loginpb.LoginProto{Username: "auliman-a",
+		Password: "wordpass"}})
 
 	if err != nil {
 		log.Fatalf("failed to get book list: %v", err)
 	}
-	return &model.User{Name: "OK", ID: "1"}, nil
+	return &model.User{Name: userData.UserDetail.Username, ID: userData.UserDetail.Role}, nil
 }
 
 func (r *queryResolver) GetUsers(ctx context.Context) ([]*model.User, error) {
