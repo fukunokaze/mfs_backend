@@ -6,12 +6,26 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"log"
+
+	"mfs_backend/LoginService/loginpb"
 
 	"github.com/fukunokaze/mfs_backend/APIGateway/graph/generated"
 	"github.com/fukunokaze/mfs_backend/APIGateway/graph/model"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func (r *mutationResolver) Authenticate(ctx context.Context, input model.Login) (*model.User, error) {
+	conn, err := grpc.Dial("localhost:50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	client := loginpb.NewInventoryClient(conn)
+
+	client.VerifyLogin()
+
+	if err != nil {
+		log.Fatalf("failed to get book list: %v", err)
+	}
 	return &model.User{Name: "OK", ID: "1"}, nil
 }
 

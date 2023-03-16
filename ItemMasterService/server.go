@@ -27,7 +27,7 @@ func main() {
 
 	var opts []grpc.ServerOption
 	s := grpc.NewServer(opts...)
-	itemmasterpb.RegisterBlogServiceServer(s, &server{})
+	itemmasterpb.RegisterItemMasterServiceServer(s, &server{})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
 
@@ -47,9 +47,9 @@ func main() {
 
 }
 
-func (s *server) CreateItemMaster(ctx context.Context, in *CreateItemMasterRequest) (*CreateItemMasterResponse, error) {
+func (s *server) CreateItemMaster(ctx context.Context, in *itemmasterpb.CreateItemMasterRequest) (*itemmasterpb.CreateItemMasterResponse, error) {
 
-	return &itemmasterpb.CreateItemMaster{
+	return &itemmasterpb.CreateItemMasterResponse{
 		ItemMaster: &itemmasterpb.ItemMasterProto{
 			ItemId:     1,
 			ItemNumber: "1",

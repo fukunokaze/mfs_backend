@@ -9,23 +9,19 @@ message LoginProto{
     string password = 2;
 }
 
-message CreateItemMasterRequest{
-    ItemMasterProto item_master = 1;
+message UserProto{
+    string username = 1;
+    string role = 2;
 }
 
-message CreateItemMasterResponse{
-    ItemMasterProto item_master = 1;
+message VerifyLoginRequest{
+    LoginProto login = 1;
 }
 
-message GetAllItemMasterRequest{
-    
+message VerifyLoginResponse{
+    UserProto userDetail = 1;
 }
 
-message GetAllItemMasterResponse{
-    repeated ItemMasterProto item_master_list = 1;
-}
-
-service ItemMasterService{
-    rpc CreateItemMaster(CreateItemMasterRequest) returns (CreateItemMasterResponse);
-    rpc GetAllItemMaster(GetAllItemMasterRequest) returns(GetAllItemMasterResponse); 
+service LoginService{
+    rpc VerifyLogin(VerifyLoginRequest) returns (VerifyLoginResponse);
 }
